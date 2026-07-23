@@ -51,8 +51,12 @@
 
                 </div>
             @empty
-            <h1 class="text-xs font-sans"></h1>
-                <h2> No Applications foud. Go to <a href="{{ route('job-vacancies.index') }}"> jobs </a> and get your job </h2>
+            <h1 class="text-xs font-sans "></h1>
+                <h2 class="text-center"> No Applications foud. Go to
+                    <a href="{{ route('dashboard') }}" class="underline text-blue-500">
+                        jobs
+                    </a> and get your dream job.
+                </h2>
             @endforelse
 
             <div>
