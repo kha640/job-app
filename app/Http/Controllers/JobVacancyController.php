@@ -27,6 +27,8 @@ class JobVacancyController extends Controller
     public function show( string $id ) {
         $jobVacancy = JobVacancy::findOrFail( $id);
 
+        $this->incrementViewCount( $jobVacancy );
+
         return view('job-vacancies.show', compact('jobVacancy'));
     }
 
@@ -44,7 +46,7 @@ class JobVacancyController extends Controller
         $extractedInfo = null;
         $jobVacancy = JobVacancy::findOrFail( $id );
 
-        if ( $request->input('resume_option') === 'new_resume' ) {
+        if ( $request->input('resume_option') == 'new_resume' ) {
             $file = $request->file('resume_file');
             $extension = $file->guessClientExtension();
             $originalFileName = $file->getClientOriginalName();
@@ -55,7 +57,7 @@ class JobVacancyController extends Controller
 
             $fileUrl = config('filesystems.disks.cloud.url') . '/' . $path;
 
-            // TODO Extract inforamtion form resume
+            // Extract inforamtion form resume
             $extractedInfo = $this->resumeAnalysisService->extractResumeInformation( $fileUrl );
 
             $resume = Resume::create([
@@ -78,8 +80,8 @@ class JobVacancyController extends Controller
             $resume = Resume::findOrFail( $resumeId );
         }
 
-        // TODO Evluate Job Application
-        // Use The $exrtactedInfo to evluate the job application
+        // Evluate Job Application
+        // Use The $exrtactedInfo to evluate the job application - Using Ai external service
         $evaluation = $this->resumeAnalysisService->analyzeResume( $jobVacancy, $extractedInfo );
 
         JobApplication::create([
@@ -94,70 +96,9 @@ class JobVacancyController extends Controller
         return redirect()->route('job-applications.index', $id)->with('success', 'Application submitted successfuly');
     }
 
-    public function testGemini() {
-        try {
-            // استخدام الموديل الأحدث والديناميكي من قائمتك
-            $modelName = 'models/gemini-2.5-pro';
-            $apiKey = env('GEMINI_API_KEY');
-
-            // بناء الرابط المباشر
-            $url = "https://generativelanguage.googleapis.com/v1beta/{$modelName}:generateContent?key={$apiKey}";
-
-            // إرسال الطلب باستخدام لارافيل HTTP
-            $response = \Illuminate\Support\Facades\Http::withHeaders([
-                'Content-Type' => 'application/json',
-            ])->post($url, [
-                'contents' => [
-                    [
-                        'parts' => [
-                            ['text' => 'اي الاخبار عامل ايه؟']
-                        ]
-                    ]
-                ]
-            ]);
-
-            if ($response->successful()) {
-                $result = $response->json();
-
-                // استخراج الرد النصي من هيكل JSON الخاص بجوجل
-                $aiText = $result['candidates'][0]['content']['parts'][0]['text'];
-
-                echo $aiText;
-
-                return response()->json([
-                    'status' => 'success',
-                    'message' => 'الربط تم بنجاح! 🚀',
-                    'model_used' => $modelName,
-                    'ai_response' => $aiText
-                ]);
-            } else {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => 'حدث خطأ أثناء التوليد',
-                    'details' => $response->json()
-                ], $response->status());
-            }
-
-        } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error('Gemini Final Test Error: ' . $e->getMessage());
-            return response()->json([
-                'status' => 'error',
-                'message' => 'خطأ في النظام',
-                'error_details' => $e->getMessage()
-            ], 500);
-        }
+    private function incrementViewCount( JobVacancy $jobVacancy ): void {
+        $jobVacancy->increment('viewCount');
     }
-    // public function testOpenAI(): void {
-    //     $result = OpenAI::chat()->create(parameters: [
-    //         'model' => 'gpt-4o-mini',
-    //         'messages' => [
-    //             ['role' => 'system', 'content' => 'You are an HR manager.'],
-    //             ['role' => 'user', 'content' => 'Hello!'],
-    //         ],
-    //     ]);
-
-    //     echo $result->choices[0]->message->content; // Hello! How can I assist you today?
-    // }
 
     public function testGroq() {
         try{

@@ -213,12 +213,11 @@ class ResumeAnalysisServics
         } catch( Exception $e ) {
             Log::error('Error analyzing resume: ' . $e->getMessage() . ' - ' . $jobVacancy->id);
 
-            throw $e;
-
-            // return [
-            //     'aiGeneratedScoure' => 0,
-            //     'aiGeneratedFeedback' => 'An error occurred while analyzing the resume. Please try again later.',
-            // ];
+            // throw $e;
+            return [
+                'aiGeneratedScoure' => 0,
+                'aiGeneratedFeedback' => 'An error occurred while analyzing the resume. Please try again later.',
+            ];
         }
     }
 

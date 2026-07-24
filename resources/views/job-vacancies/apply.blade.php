@@ -44,7 +44,7 @@
                     <h3 class="text-xl font-semibold text-white mb-4"> Choose Your Resume </h3>
 
                     <div class="mb-6">
-                        <x-input-label for="resume" value="Select form your existing resumes" class="mb-5" />
+                        <x-input-label for="resume_option" value="Select form your existing resumes" class="mb-5" />
                         {{-- List of resumes --}}
                         <div class="space-y-2">
                             @forelse ( $userResumes as $resume )
@@ -56,11 +56,10 @@
                                             class="border-gray-500"
                                         @enderror
                                     />
-                                    <x-input-label class="text-white cursor-pointer ">
+                                    <x-input-label class="text-white cursor-pointer" name="resume_option">
                                         {{ $resume->fileName }}
                                         <span class="text-gray-400 text-sm"> (Created at:  {{ $resume->created_at->format('d M, Y') }})  </span>
                                     </x-input-label>
-
                                 </div>
                             @empty
                                 <span class="text-gray-400 text-sm"> No resumes found. </span>

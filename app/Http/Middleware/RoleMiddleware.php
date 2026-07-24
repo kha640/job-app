@@ -21,7 +21,7 @@ class RoleMiddleware
             $hasAccess = in_array( $userRole, $roles );
 
             if ( !$hasAccess ) {
-                return abort(403, "You did't have a permision to login with this account in this system, try again later or call the technical supportc team.");
+                return abort(403, "You did't have a permision to login with this account in this system, try again later or call the technical support team.");
             }
         }
 

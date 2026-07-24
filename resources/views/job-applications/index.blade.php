@@ -16,13 +16,13 @@
         <div class="bg-black shadow-lg rounded-lg p-6 max-w-7xl mx-auto space-y-4">
             @forelse ( $jobApplications as $jobApplication )
                 <div class="bg-gray-900 p-4 rounded-md mb-2">
-                    <h3 class="text-white text-lg font-bold mb-2">{{ $jobApplication->jobVacancy->title }}</h3>
-                    <p class="text-white text-lg font-bold mb-2">{{ $jobApplication->jobVacancy->company->name }}</p>
-                    <p class="text-xs">{{ $jobApplication->jobVacancy->location }}</p>
+                    <h3 class="text-white text-lg font-bold mb-2">{{ $jobApplication->jobVacancy?->title ?? 'N/A' }}</h3>
+                    <p class="text-white text-lg font-bold mb-2">{{ $jobApplication->jobVacancy->company?->name ?? 'N/A' }}</p>
+                    <p class="text-xs">{{ $jobApplication->jobVacancy?->location ?? 'N/A' }}</p>
 
                     <div class="flex items-center justify-between mt-2">
                         <p class="text-sm"> {{ $jobApplication->created_at->format('d m, Y') }} </p>
-                        <p class="px-3 py-1 bg-indigo-600 text-white rounded-md">{{ $jobApplication->jobVacancy->type }}</p>
+                        <p class="px-3 py-1 bg-indigo-600 text-white rounded-md">{{ $jobApplication->jobVacancy?->type ?? 'N/A' }}</p>
                     </div>
 
                     <div class="flex items-center gap-2">

@@ -6,17 +6,17 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-white" />
+                        <img class="block h-9 w-14 fill-current text-white rounded-full" src="{{ asset('img/logo.png') }}" alt="Shaghlni-logo" />
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="text-white">
+                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs(['dashboard', 'job-vacancies.show', 'job-vacancies.apply'])" class="text-white">
                         {{ __('Dashboard') }}
                     </x-nav-link>
 
-                    <x-nav-link :href="route('job-applications.index')" :active="request()->routeIs('job-applications')" class="text-white">
+                    <x-nav-link :href="route('job-applications.index')" :active="request()->routeIs('job-applications.index')" class="text-white">
                         {{ __('My Applications') }}
                     </x-nav-link>
                 </div>
